@@ -23,13 +23,10 @@ public class MapTest
     {
         map.AddAnimal(animal);
 
-        var actualDict = typeof(Map).GetField("_animals", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var dict = actualDict.GetValue(map) as Dictionary<Point, List<Animal>>;
-
-        Assert.That(dict,Is.Not.Null);
-        Assert.That(1, Is.EqualTo(dict.Count));
-        Assert.That(dict.ContainsKey(new Point(2, 2)),Is.True);
-        Assert.That(new List<Animal> { animal }, Is.EqualTo(dict[new Point(2, 2)]));
+        Assert.That(map.Animals,Is.Not.Null);
+        Assert.That(1, Is.EqualTo(map.Animals.Count));
+        Assert.That(map.Animals.ContainsKey(new Point(2, 2)),Is.True);
+        Assert.That(new List<Animal> { animal }, Is.EqualTo(map.Animals[new Point(2, 2)]));
     }
 
     [Test]
@@ -50,13 +47,10 @@ public class MapTest
 
         map.RemoveAnimal(animal);
 
-        var actualDict = typeof(Map).GetField("_animals", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var dict = actualDict.GetValue(map) as Dictionary<Point, List<Animal>>;
-
-        Assert.That(dict, Is.Not.Null);
-        Assert.That(1, Is.EqualTo(dict.Count));
-        Assert.That(dict.ContainsKey(new Point(2, 2)),Is.False);
-        Assert.That(dict.ContainsKey(new Point(3, 1)),Is.True);
+        Assert.That(map.Animals, Is.Not.Null);
+        Assert.That(1, Is.EqualTo(map.Animals.Count));
+        Assert.That(map.Animals.ContainsKey(new Point(2, 2)),Is.False);
+        Assert.That(map.Animals.ContainsKey(new Point(3, 1)),Is.True);
     }
 
     [Test]
@@ -64,12 +58,9 @@ public class MapTest
     {
         map.AddPlant(new Plant(new Point(3, 2), 20));
 
-        var actualPlants = typeof(Map).GetField("_plants", BindingFlags.NonPublic | BindingFlags.Instance);
-        var dict = actualPlants.GetValue(map) as Dictionary<Point, Plant>;
-
-        Assert.That(dict, Is.Not.Null);
-        Assert.That(1, Is.EqualTo(dict.Count));
-        Assert.That(dict.ContainsKey(new Point(3, 2)),Is.True);
+        Assert.That(map.Plants, Is.Not.Null);
+        Assert.That(1, Is.EqualTo(map.Plants.Count));
+        Assert.That(map.Plants.ContainsKey(new Point(3, 2)),Is.True);
     }
 
     [Test]
@@ -79,12 +70,9 @@ public class MapTest
 
         map.RemovePlant(new Point(3, 2));
 
-        var actualPlants = typeof(Map).GetField("_plants", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-        var dict = actualPlants.GetValue(map) as Dictionary<Point, Plant>;
-
-        Assert.That(dict, Is.Not.Null);
-        Assert.That(0, Is.EqualTo(dict.Count));
-        Assert.That(dict.ContainsKey(new Point(3, 2)),Is.False);
+        Assert.That(map.Plants, Is.Not.Null);
+        Assert.That(0, Is.EqualTo(map.Plants.Count));
+        Assert.That(map.Plants.ContainsKey(new Point(3, 2)),Is.False);
     }
 
     [Test]
@@ -124,9 +112,7 @@ public class MapTest
         map.AddAnimal(a2);
         map.Reproduct(a1);
 
-        var actualDict = typeof(Map).GetField("_animals", BindingFlags.NonPublic | BindingFlags.Instance);
-        var dict = actualDict.GetValue(map) as Dictionary<Point, List<Animal>>;
-        List<Animal> animals = dict[p];
+        List<Animal> animals = map.Animals[p];
 
         Assert.That(animals.Count, Is.EqualTo(3));
         Assert.That(a1.Energy, Is.EqualTo(90));
@@ -141,11 +127,9 @@ public class MapTest
         map.AddAnimal(a);
         map.MoveAnimal(a);
 
-        var actualDict = typeof(Map).GetField("_animals", BindingFlags.NonPublic | BindingFlags.Instance);
-        var dict = actualDict.GetValue(map) as Dictionary<Point, List<Animal>>;
 
-        Assert.That(dict.ContainsKey(new Point(3,2)),Is.False);
-        Assert.That(dict.ContainsKey(new Point(3,3)),Is.True);
+        Assert.That(map.Animals.ContainsKey(new Point(3,2)),Is.False);
+        Assert.That(map.Animals.ContainsKey(new Point(3,3)),Is.True);
         Assert.That(a.Position, Is.EqualTo(new Point(3, 3)));
         Assert.That(a.Day, Is.EqualTo(1));
         Assert.That(a.Energy, Is.EqualTo(99));
